@@ -4,7 +4,11 @@ import com.udacity.vehicles.client.maps.MapsClient;
 import com.udacity.vehicles.client.prices.PriceClient;
 import com.udacity.vehicles.domain.car.Car;
 import com.udacity.vehicles.domain.car.CarRepository;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 /**
@@ -34,7 +38,14 @@ public class CarService {
 	 * @return a list of all vehicles in the CarRepository
 	 */
 	public List<Car> list() {
-		return repository.findAll();
+		List<Car> carList =  repository.findAll();
+		List<Car> cars = new ArrayList<Car>();
+		for(Car car : carList) {
+			cars.add(findById(car.getId()));
+			
+		}
+		
+		return cars;
 	}
 
 	/**
@@ -102,7 +113,14 @@ public class CarService {
 		 * TODO: Find the car by ID from the `repository` if it exists. If it does not
 		 * exist, throw a CarNotFoundException
 		 */
-
+		Optional<Car> car = repository.findById(id);
+		if(car.isPresent()) {
+		           repository.deleteById(id);
+		}
+		else {
+			throw new CarNotFoundException("Car not found with given id : " + id);
+		}
+		
 		/**
 		 * TODO: Delete the car from the repository.
 		 */
