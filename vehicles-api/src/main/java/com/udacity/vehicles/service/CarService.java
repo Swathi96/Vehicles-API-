@@ -67,7 +67,7 @@ public class CarService {
 		 * The car class file uses @transient, meaning you will need to call the pricing
 		 * service each time to get the price.
 		 */
-
+		
 		car.setPrice(priceClient.getPrice(id));
 		/**
 		 * TODO: Use the Maps Web client you create in `VehiclesApiApplication` to get
@@ -96,6 +96,7 @@ public class CarService {
 			return repository.findById(car.getId()).map(carToBeUpdated -> {
 				carToBeUpdated.setDetails(car.getDetails());
 				carToBeUpdated.setLocation(car.getLocation());
+				carToBeUpdated.setCondition(car.getCondition());
 				return repository.save(carToBeUpdated);
 			}).orElseThrow(CarNotFoundException::new);
 		}
